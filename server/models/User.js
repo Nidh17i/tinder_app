@@ -1,36 +1,35 @@
 import mongoose from "mongoose";
 
-const UserSchena=new mongoose.Schema({
-    name:{
-     type:String,
-     required:[true,'Please TYpe a Name !'],
-    },
+const userSchema=new mongoose.Schema({
+  name:{
+    type:String,
+    required:[true,'namme likhna jaruri hai'],
+    min:[2,'to short name'],
+    max:[20,'to long name']
 
-    user_name:{
-        type:String,
-        required:[true,'Please Type a User Name!'],
-      },
+  },
+  username:{
+    type:String,
+    required:[true,'username likhna jaruri hai'],
+    unique:[true,'aviable Enter unique'],
+    min:[4,'too short...'],
+    max:[8,'to.. long'],
+ },
+ password:{
+  type:String,
+  required:true
 
-      email:{
-        type:String,
-        required:[true,'Please Type an Email!'],
-        unique:true
-      },
-      password:{
-        type:String,
-        required:[true,"Please Type a PassWord!"],
-      },
-      profession:{
-        type:String,
-        required:[true,"Please Type a Profession!"],
-      },
+ },
+ email:{
+type:String,
+required:[true,'enter email'],
+unique:[true,'all aviable..'],
+ }
 
-
-      accepted:[{}],
-      rejected:[{}],
-      matches:[{}],
-      
 })
 
-export const TinderUser=mongoose.model('tinderUser',UserSchena)
+export const TinderUser=mongoose.model('tinderuser',userSchema);
+
+
+
 

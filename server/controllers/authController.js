@@ -1,69 +1,62 @@
- import {TinderUser} from '../models/User.js'
- import bcrypt from 'bcryptjs';
- import jwt from 'jsonwebtoken'
 
- export const signupUser=async(req,res)=>{
+import { TinderUser } from "../models/User.js";
+import bcrypt from 'bcryptjs';
+import jwt from 'jsonwebtoken';
+
+export const userSignup=async(req,res)=>{
+
     try{
-        const{name,user_name,email,password,profession}=req.body;
+    const {name,username,email,password}=req.body;
+    const hashpassword= await bcrypt.hash(password,10);  
 
-        const userExists=await TinderUser.findOne({email});
-        if(userExists) {
-            return res.status(404).json({message:"User already exists"});
-        }
-            const hashPassword=await bcrypt.hash(password,10);
-
-            const user= await TinderUser.create({
-                name,
-                user_name,
-                email,
-                password:hashPassword,
-                profession
-            });
-
-            const token=jwt.sign(
-                {id:user._id},
-                'secret',
-                {expiresIn:'1d'}
-            ) ;
-            res.cookie('token',token,{
-                httpOnly:true,
-            } )
-
-
-            res.json({message:'User registered',user});
-
-        }
-        catch(err){
-
-        res.status(500).json({error:err.message});
-       
-       
+    if(!name||!username||!email|| !password){
+        res.status(404).json({message:'All filed required'});
     }
-}
+    const userExists=await TinderUser.findOne({email});
+    if(userExists){
+        res.status(404).json({message:'user already exists'});
 
-export const loginUser=async(req,res)=>{
+    }
+    
+    const user= await TinderUser.create({
+        name,
+        username,
+        email,
+        password:hashpassword,
+    })
+    
+    const token=jwt.sign({id:user._id},'secure',{expiresIn: '1h'})
+    res.cookie('token',token);
+
+    res.status(201).json({message:'user Signup Sucessfully'},user,token);
+
+    }catch(err){
+         res.status(500).json({error:err.message});
+    }
+
+
+
+}
+export const userLogin=async (req,res)=>{
     try{
         const{email,password}=req.body;
 
-        const user=await TinderUser.findOne({email});
-        if(!user) return res.status(400).json({message:'Invalid Email'});
+        if(!email|| !password) return res.status(400).json({message:'All filed required'})
 
-        const isPasswordMatch=await bcrypt.compare(password,user.password);
-        if(!isPasswordMatch) return res.status(400).json({message:'Invalid Password'});
-         
-            const token=jwt.sign(
-                {id:user._id},
-                'secret',
-                {expiresIn:'1d'}
-            ) ;
-            res.cookie('token',token,{
-                httpOnly:true,
-            } )
+        const user= await TinderUser.findOne({email});
+        if(!user)return  res.status(404).json({message:'Invaild email '});
+        
+        const checkPassword= await bcrypt.compare(password,user.password);
+        if(!checkPassword) return res.status(404).json({message:'invaild password'});
 
+        const token=jwt.sign({id:user._id},'secure',{expiresIn: '1h'})
+        res.cookie('token',token);
 
-        res.json({message:'Login Successfully',user});
+        res.status(201).json({message:'login sucessfully',user});
+
     }catch(err){
-        res.status(500).json({error:err.message});
-    }
+        res.status(500).json({error: err.message})
+
     }
 
+}
