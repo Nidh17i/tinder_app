@@ -1,35 +1,51 @@
 import mongoose from "mongoose";
 
-const userSchema=new mongoose.Schema({
-  name:{
-    type:String,
-    required:[true,'namme likhna jaruri hai'],
-    min:[2,'to short name'],
-    max:[20,'to long name']
-
+const userSchema = new mongoose.Schema({
+  name: {
+    type: String,
+    required: [true, "name is required"],
+    min: [2, "to short name"],
+    max: [20, "to long name"],
   },
-  username:{
-    type:String,
-    required:[true,'username likhna jaruri hai'],
-    unique:[true,'aviable Enter unique'],
-    min:[4,'too short...'],
-    max:[8,'to.. long'],
- },
- password:{
-  type:String,
-  required:true
+  username: {
+    type: String,
+    required: [true, "username is required"],
+    unique: [true, "username already exists"],
+    min: [4, "too short..."],
+    max: [8, "to.. long"],
+  },
+  password: {
+    type: String,
+    required: true,
+  },
+  email: {
+    type: String,
+    lowercase:[true,'enter valid mail'],
+    required: [true, "enter email"],
+    unique: [true, "enter vaild mail"],
+  },
+  // not required
+   age:{
+        type:Number,
+        min:[18,'Age must be 18 or above'],
+        max:65
+      },
+      gender:{
+        type:String,
+        enum:['Male','Female','Other']
+      },
+      state:{
+        type:String
+      },
+      city:{
+        type:String
+      },
+  accepted: [],
+  rejected: [],
+  matchs: [],
+});
 
- },
- email:{
-type:String,
-required:[true,'enter email'],
-unique:[true,'all aviable..'],
- }
-
-})
-
-export const TinderUser=mongoose.model('tinderuser',userSchema);
-
+export const TinderUser = mongoose.model("tinderuser", userSchema);
 
 
 
