@@ -25,7 +25,7 @@ export const userSignup = async (req, res) => {
     const token = jwt.sign({ id: user._id }, "secure", { expiresIn: "1h" });
     res.cookie("token", token);
 
-    res.status(201).json({ message: "user Signup Sucessfully" }, user, token);
+    res.status(201).json({ message: "user Signup Sucessfully" }, user);
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
@@ -53,14 +53,11 @@ export const userLogin = async (req, res) => {
   }
 };
 
-const UserLogOut=async(req,res)=>{
-  
-}
 
 export const findUser=async(req,res)=>{
   try{
     const {query}=req.query;
-   // console.log('query..',query);
+   console.log('query..',query);
     const token = req.cookies.token;
     const decode = jwt.verify(token, "secure");
     const curr_id=decode.id;
@@ -88,5 +85,8 @@ export const findUser=async(req,res)=>{
   }
 }
 
-
+export const logoutUser=async(req,res)=>{
+  res.clearCookie("token")
+  res.status(200).json({message:'logged out successfully'});
+}
 
