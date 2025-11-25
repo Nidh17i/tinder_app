@@ -1,4 +1,5 @@
 import mongoose from "mongoose";
+import { ref } from "process";
 
 const userSchema = new mongoose.Schema({
   name: {
@@ -40,9 +41,20 @@ const userSchema = new mongoose.Schema({
       city:{
         type:String
       },
-  accepted: [],
-  rejected: [],
-  matchs: [],
+  friends: [
+    {
+      type:mongoose.Schema.Types.ObjectId,
+      ref:'tinderuser'
+
+    }
+  ],
+  pending_friends:[
+    {
+      type:mongoose.Schema.Types.ObjectId,
+      ref:'tinderuser'
+    }
+  ],
+ 
 });
 
 export const TinderUser = mongoose.model("tinderuser", userSchema);
