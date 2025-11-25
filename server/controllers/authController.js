@@ -62,7 +62,7 @@ export const logoutUser = async (req, res) => {
 export const findUser = async (req, res) => {
   try {
     const { query } = req.query;
-   // console.log("query..", query);
+    // console.log("query..", query);
     const token = req.cookies.token;
     const decode = jwt.verify(token, "secure");
     const curr_id = decode.id;
@@ -74,85 +74,78 @@ export const findUser = async (req, res) => {
         { email: { $regex: `^${query}`, $options: "i" } },
       ],
     });
-    if (users.length <= 0)return res.status(404).json({ message: "No User Found" });
-   
+    if (users.length <= 0)
+      return res.status(404).json({ message: "No User Found" });
+
     return res.status(200).json({ message: "fetch User", users });
     // console.log(users)
-  
   } catch (err) {
     return res.status(500).json({ message: err.message });
   }
 };
 
-export const sendFriendReq=async (req,res)=>{
-  try{
-  const sender=req.user._id;
-   //console.log(sender);
-  const {reciever}=req.body;
-   // console.log(reciever);
+export const sendFriendReq = async (req, res) => {
+  try {
+    const sender = req.user._id;
+    //console.log(sender);
+    const { reciever } = req.body;
+    // console.log(reciever);
 
-  const userExit=await TinderUser.findById(reciever);
-  if(userExit.length <=0) return res.status(400).json({message:'no user available'});
-  //console.log(userExit);
+    const userExit = await TinderUser.findById(reciever);
+    if (userExit.length <= 0)
+      return res.status(400).json({ message: "no user available" });
+    //console.log(userExit);
 
-  const index=req.user.friends.findIndex(id => id.equals(reciever))
-  //console.log('index',index);
+    const index = req.user.friends.findIndex((id) => id.equals(reciever));
+    //console.log('index',index);
 
-  if(index != -1) return res.status(400).json({message:'already Friends'});
+    if (index != -1)
+      return res.status(400).json({ message: "already Friends" });
 
-  const Recindex=userExit.pending_friends.findIndex(id=> id.equals(req.user._id));
-  console.log('Rec pendingList Index',Recindex);
-   if(Recindex != -1) return res.status(400).json({message:'already send Request'});
+    const Recindex = userExit.pending_friends.findIndex((id) =>
+      id.equals(req.user._id)
+    );
+    console.log("Rec pendingList Index", Recindex);
+    if (Recindex != -1)
+      return res.status(400).json({ message: "already send Request" });
 
-   
+    userExit.pending_friends.push(req.user);
 
-  
-   userExit.pending_friends.push(req.user);
-
-  console.log('pending Frineds',userExit.pending_friends);
-  userExit.save();
-  //console.log(userExit);
-  return res.status(200).json({message:'Send friendrequest'})
-
-  }catch(err){
-    return res.status(500).
-    json({message:err.message});
+    console.log("pending Frineds", userExit.pending_friends);
+    userExit.save();
+    //console.log(userExit);
+    return res.status(200).json({ message: "Send friendrequest" });
+  } catch (err) {
+    return res.status(500).json({ message: err.message });
   }
+};
 
+export const acceptFrinedReq = async (req, res) => {
+  try {
+    const { friendId } = req.body;
+    //console.log('friendId',friendId);
 
-}
+    const reciever = req.user._id;
+    //console.log('reciever..',reciever);
 
+    const existUser = await TinderUser.findById(friendId);
+    //console.log(existUser);
 
-export const acceptFrinedReq=async (req,res)=>{
-  try{
+    if (!existUser) return res.status(404).json({ message: "no user exist" });
 
-  const {friendId}=req.body;
-  //console.log('friendId',friendId);
- 
- const reciever=req.user._id;
- //console.log('reciever..',reciever);
+    const index = req.user.pending_friends.findIndex((id) =>
+      id.equals(friendId)
+    );
+    if (index != -1) {
+      existUser.friends.push(reciever);
+      existUser.save();
 
- const existUser=await TinderUser.findById(friendId);
- //console.log(existUser);
- 
- if(!existUser) return res.status(404).json({message:'no user exist'});
-
-  const index=req.user.pending_friends.findIndex(id=> id.equals(friendId));
-  if(index != -1){
-
-    existUser.friends.push(reciever);
-    existUser.save();
-
-    req.user.friends.push(friendId);
-    req.user.save();
-
+      req.user.friends.push(friendId);
+      req.user.save();
+    }
+    console.log("existuserfriendList", existUser.friends);
+    console.log("selffriendlist", req.user.friends);
+  } catch (err) {
+    res.status(500).json({ message: err.message });
   }
-  console.log('existuserfriendList',existUser.friends);
-  console.log('selffriendlist',req.user.friends);
-}
-  catch(err){
-    res.status(500).
-    json({message:err.message});
-  }
-}
-
+};
