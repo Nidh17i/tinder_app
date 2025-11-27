@@ -4,8 +4,7 @@ import jwt from "jsonwebtoken";
 
 export const userSignup = async (req, res) => {
   try {
-    const { name, username, email, password} =
-      req.body;
+    const { name, username, email, password } = req.body;
     const hashpassword = await bcrypt.hash(password, 10);
 
     if (!name || !username || !email || !password) {
@@ -23,7 +22,9 @@ export const userSignup = async (req, res) => {
       password: hashpassword,
     });
 
-    const token = jwt.sign({ id: user._id }, "secure", { expiresIn: "1h" });
+    const token = jwt.sign({ id: user._id }, process.env.Secret_Key, {
+      expiresIn: "1h",
+    });
     res.cookie("token", token);
 
     res.status(201).json({ message: "user Signup Sucessfully" }, user);
@@ -45,10 +46,12 @@ export const userLogin = async (req, res) => {
     if (!checkPassword)
       return res.status(404).json({ message: "invaild password" });
 
-    const token = jwt.sign({ id: user._id }, "secure", { expiresIn: "1h" });
+    const token = jwt.sign({ id: user._id }, process.env.Secret_Key, {
+      expiresIn: "1h",
+    });
     res.cookie("token", token);
 
-    res.status(201).json({ message: "login sucessfully", user });
+    res.status(201).json({ message: "login sucessfully",});
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
@@ -58,5 +61,3 @@ export const logoutUser = async (req, res) => {
   res.clearCookie("token");
   res.status(200).json({ message: "logged out successfully" });
 };
-
-

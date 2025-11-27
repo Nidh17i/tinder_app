@@ -6,13 +6,13 @@ const ConnectionSchema=new mongoose.Schema(
      senderUser:{
         type:mongoose.Schema.Types.ObjectId,
         required:true,
-        ref:'tinderUser',
+        ref:'tinderuser',
         
      },
      receiverUser:{
         type:mongoose.Schema.Types.ObjectId,
         required:true,
-        ref:'tinderUser',
+        ref:'tinderuser',
      
      },
       status: {

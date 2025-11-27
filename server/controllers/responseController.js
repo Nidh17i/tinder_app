@@ -1,3 +1,4 @@
+import { send } from "vite";
 import { UserConnection } from "../models/Connection.js";
 import { TinderUser } from "../models/User.js";
 
@@ -6,12 +7,16 @@ export const approveConnectionReq = async (req, res) => {
     const receiverId = req.user.id;
     const senderId = req.params.senderUser;
 
+    // console.log(senderId);
+
     const request = await UserConnection.findOne({
       senderUser: senderId,
       receiverUser: receiverId,
       status: "pending",
     });
     if (!request) throw new Error("No pending request found");
+
+    //console.log("request.",request)
 
     request.status = "accepted";
     await request.save();
@@ -34,6 +39,8 @@ export const RejectConnectionReq = async (req, res) => {
     const receiverId = req.user.id;
     const senderId = req.params.senderUser;
 
+    //console.log('senderID',senderId);
+
     const request = await UserConnection.findOne({
       senderUser: senderId,
       receiverUser: receiverId,
@@ -43,6 +50,8 @@ export const RejectConnectionReq = async (req, res) => {
 
     request.status = "rejected";
     await request.save();
+
+    //console.log("rejectuserid",request);
 
     return res.status(200).json({ message: "Request rejected", request });
   } catch (err) {

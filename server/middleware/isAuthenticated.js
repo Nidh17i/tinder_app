@@ -7,7 +7,7 @@ export const isAuthenticated = async (req, res, next) => {
     if (!token)
     return res.status(401).json({ error: "No token,authorization denied" });
 
-    const decode = jwt.verify(token, "secure");
+    const decode = jwt.verify(token, process.env.Secret_Key);
     //console.log('decoded ',decode);
    
 

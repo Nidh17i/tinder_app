@@ -62,5 +62,3 @@ const userSchema = new mongoose.Schema({
 
 export const TinderUser = mongoose.model("tinderuser", userSchema);
 
-
-

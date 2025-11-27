@@ -8,7 +8,7 @@ export const Feed=async(req,res)=>{
       
         
         const user=await TinderUser.findById(userId).select("friends ignore")
-        console.log('friends igonre',user)
+        console.log('friends and igonre user',user)
 
         const connections=await UserConnection.find({
             $or:[
@@ -16,6 +16,7 @@ export const Feed=async(req,res)=>{
                 {receiverUser:userId}
             ]
         });
+        console.log('connections ',connections);
         const skipUser=new Set();
 
         skipUser.add(String(userId));
@@ -53,11 +54,11 @@ export const pendingRequests=async(req,res)=>{
         const request=await UserConnection.find({
             receiverUser:userId,
             status:"pending",
-    }).populate("senderUser","name username city age");
+    }).populate("senderUser","name username city ");
 
     return res.status(200).json({
         message:"Incoming Request",
-        request,
+        request:request,
     });
     }
     catch(err){
@@ -102,7 +103,7 @@ export const updateProfile=async(req,res)=>{
     const updateUser=await TinderUser.findByIdAndUpdate(
       userId,
       {$set:updateData},
-      {new:true,runValidators: false}
+      {new:true}
     ).select("-password")
 
     return res.status(200).json({
@@ -114,3 +115,6 @@ export const updateProfile=async(req,res)=>{
         return res.status(500).json({ message: err.message });
     }
 }
+
+
+
