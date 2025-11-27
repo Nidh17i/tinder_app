@@ -26,7 +26,7 @@ const userSchema = new mongoose.Schema({
     unique: [true, "enter vaild mail"],
   },
   // not required
-   age:{
+      age:{
         type:Number,
         min:[18,'Age must be 18 or above'],
         max:65
@@ -41,6 +41,7 @@ const userSchema = new mongoose.Schema({
       city:{
         type:String
       },
+
   friends: [
     {
       type:mongoose.Schema.Types.ObjectId,
@@ -48,12 +49,14 @@ const userSchema = new mongoose.Schema({
 
     }
   ],
-  pending_friends:[
+  ignore: [
     {
       type:mongoose.Schema.Types.ObjectId,
       ref:'tinderuser'
+
     }
   ],
+
  
 });
 
