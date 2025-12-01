@@ -1,10 +1,18 @@
 import mongoose from "mongoose";
-import { ref } from "process";
+
 
 const userSchema = new mongoose.Schema({
-  name: {
+  firstname: {
     type: String,
-    required: [true, "name is required"],
+    required: [true, "firstname is required"],
+   trim: true,
+    min: [2, "to short name"],
+    max: [20, "to long name"],
+  },
+  lastname: {
+    type: String,
+    required: [true, "lastname is required"],
+    trim: true,
     min: [2, "to short name"],
     max: [20, "to long name"],
   },

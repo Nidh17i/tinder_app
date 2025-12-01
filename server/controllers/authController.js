@@ -4,11 +4,11 @@ import jwt from "jsonwebtoken";
 
 export const userSignup = async (req, res) => {
   try {
-    const { name, username, email, password } = req.body;
+    const { firstname,lastname, username, email, password } = req.body;
     const hashpassword = await bcrypt.hash(password, 10);
 
-    if (!name || !username || !email || !password) {
-      res.status(404).json({ message: "All filed required" });
+    if (!firstname || !lastname|| !username || !email || !password) {
+     res.status(404).json({ message: "All filed required" });
     }
     const userExists = await TinderUser.findOne({ email });
     if (userExists) {
@@ -16,7 +16,8 @@ export const userSignup = async (req, res) => {
     }
 
     const user = await TinderUser.create({
-      name,
+     firstname,
+     lastname,
       username,
       email,
       password: hashpassword,
