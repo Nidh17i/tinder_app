@@ -5,14 +5,16 @@ import jwt from "jsonwebtoken";
 export const userSignup = async (req, res) => {
   try {
     const { firstname,lastname, username, email, password } = req.body;
-    const hashpassword = await bcrypt.hash(password, 10);
+   // console.log(req.body);
+   
 
     if (!firstname || !lastname|| !username || !email || !password) {
-     res.status(404).json({ message: "All filed required" });
+     return res.status(404).json({ message: "All are filed required" });
     }
+     const hashpassword = await bcrypt.hash(password, 10);
     const userExists = await TinderUser.findOne({ email });
     if (userExists) {
-      res.status(400).json({ message: "user already exists" });
+      return res.status(400).json({ message: "user already exists" });
     }
 
     const user = await TinderUser.create({
@@ -26,13 +28,16 @@ export const userSignup = async (req, res) => {
     const token = jwt.sign({ id: user._id }, process.env.Secret_Key, {
       expiresIn: "1h",
     });
-    res.cookie("token", token);
+   res.cookie("token", token,{httpOnly:true,secure:false,sameSite:"lax"});
 
-    res.status(201).json({ message: "user Signup Sucessfully" }, user);
+
+   return res.status(201).json({ message: "user Signup Sucessfully" , user,token});
   } catch (err) {
-    res.status(500).json({ error: err.message });
+    return res.status(500).json({ error: err.message });
   }
 };
+
+
 export const userLogin = async (req, res) => {
   try {
     const { email, password } = req.body;
@@ -50,15 +55,21 @@ export const userLogin = async (req, res) => {
     const token = jwt.sign({ id: user._id }, process.env.Secret_Key, {
       expiresIn: "1h",
     });
-    res.cookie("token", token);
+   res.cookie("token", token,{httpOnly:true,secure:false,sameSite:"lax"});
 
-    res.status(201).json({ message: "login sucessfully",});
+
+   return res.status(201).json({ message: "login sucessfully",user});
   } catch (err) {
-    res.status(500).json({ error: err.message });
+   return res.status(500).json({ error: err.message });
   }
 };
 
 export const logoutUser = async (req, res) => {
-  res.clearCookie("token");
-  res.status(200).json({ message: "logged out successfully" });
+  try{
+  res.clearCookie("token",{httpOnly:true});
+  return res.status(200).json({ message: "logged out successfully" });
+  }catch(err){
+    return res.status(500).json({error:err.message})
+  }
+
 };

@@ -1,30 +1,61 @@
+import axios from "axios";
 import { useState } from "react";
 import { Link } from "react-router-dom";
+import {useDispatch} from "react-redux"
+import { userLoggedIn } from "../features/authSlice";
+
 
 export const Login = () => {
     const[formData,setFormData]=useState({
         email:"",
         password:""
     })
+    const dispatch=useDispatch();
     const handleChange=(e)=>{
         const{name,value}=e.target;
         setFormData((prev)=>({...prev,[name]:value}))
     }
+     const fetchData = async () => {
+    try {
+     
+      const response = await axios.post(
+        "http://localhost:8080/auth/login",
+        formData,
+        {
+          headers: {
+            "Content-Type": "application/json",
+            
+          },
+           withCredentials: true
+        }
+      );
+ 
+    dispatch( userLoggedIn(response.data.user));
+   window.alert('user login sucessfully');
+    // console.log("Response:", response.data.user);
+    }catch (err) {
+  console.log(
+    err?.response?.data?.message || 
+    err?.response?.data?.error ||   
+    err.message                     
+  );
+}
+
+  };
     const handleSubmit=(e)=>{
         e.preventDefault();
+        fetchData();
         console.log(formData);
     }
   return (
     <div className="min-h-screen flex items-center justify-center px-4">
-      <div className="#d4dfed rounded-2xl shadow-xl w-full max-w-md   bg-sky-100 p-8">
-        <h2 className="text-3xl font-bold text-center text-blue-500 mb-6">
-          Login
-        </h2>
+      <div className="w-full max-w-md border p-6 rounded-lg">
+        <h2 className="text-2xl font-semibold text-center mb-6">Login</h2>
 
-        <form onSubmit={handleSubmit}className="space-y-5">
+        <form onSubmit={handleSubmit} className="space-y-4">
+          
           <div>
-           
-            <label className="block text-gray-600 text-sm font-medium mb-1">
+            <label className="block text-sm font-medium mb-1">
               Email
             </label>
             <input
@@ -33,13 +64,13 @@ export const Login = () => {
               value={formData.email}
               onChange={handleChange}
               required
-              className="w-full rounded-lg text-black px-4 py-2 "
-              placeholder="you@example.com"
+              className="border w-full px-3 py-2 rounded"
+              placeholder="user@example.com"
             />
           </div>
 
           <div>
-            <label className="block text-gray-600 text-sm font-medium mb-1">
+            <label className="block text-sm font-medium mb-1">
               Password
             </label>
             <input
@@ -48,21 +79,24 @@ export const Login = () => {
               value={formData.password}
               onChange={handleChange}
               required
-              className="w-full rounded-lg text-black px-4 py-2 "
+              className="border w-full px-3 py-2 rounded"
               placeholder="••••••••"
             />
           </div>
 
           <button
             type="submit"
-            className="w-full bg-blue-500 hover:bg-blue-400 text-black font-semibold py-2 rounded-lg transition"
+            className="w-full border py-2 rounded font-medium"
           >
-          Login
+            Login
           </button>
-          <p className="text-center text-gray-800 text-sm mt-4">
-          Don’t have an account?{" "}
-          <Link to="/signup" className="text-blue-400 hover:underline">Sign Up</Link>
-        </p>
+
+          <p className="text-center text-sm mt-4">
+            Don’t have an account?{" "}
+            <Link to="/signup" className="underline">
+              Sign Up
+            </Link>
+          </p>
         </form>
       </div>
     </div>

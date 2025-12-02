@@ -8,7 +8,8 @@ export const Feed=async(req,res)=>{
       
         
         const user=await TinderUser.findById(userId).select("friends ignore")
-        console.log('friends and igonre user',user)
+       // console.log('friends and igonre user',user)
+      
 
         const connections=await UserConnection.find({
             $or:[
@@ -16,7 +17,7 @@ export const Feed=async(req,res)=>{
                 {receiverUser:userId}
             ]
         });
-        console.log('connections ',connections);
+       // console.log('connections ',connections);
         const skipUser=new Set();
 
         skipUser.add(String(userId));
@@ -28,7 +29,7 @@ export const Feed=async(req,res)=>{
             skipUser.add(String(conn.receiverUser));
 
     })
-    console.log('skipusers',[...skipUser]);
+   // console.log('skipusers',[...skipUser]);
 
     const feedUsers=await TinderUser.find({
         _id:{$nin :[...skipUser]}
@@ -115,6 +116,8 @@ export const updateProfile=async(req,res)=>{
         return res.status(500).json({ message: err.message });
     }
 }
+
+
 
 
 

@@ -1,6 +1,7 @@
 import axios from "axios";
 import { useState } from "react";
 import { Link } from "react-router-dom";
+import { userLoggedIn } from "../features/authSlice";
 
 export const Signup = () => {
   const [formData, setFormData] = useState({
@@ -10,10 +11,11 @@ export const Signup = () => {
     email: "",
     password: "",
   });
+
   const handleInput = (e) => {
     const { name, value } = e.target;
-    // console.log(name);
-    // console.log(value);
+    console.log(name);
+    console.log(value);
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
@@ -26,12 +28,18 @@ export const Signup = () => {
           headers: {
             "Content-Type": "application/json",
           },
+          withCredentials: true,
         }
       );
-
-      console.log("Response:", response.data);
+      dispatch(userLoggedIn(response.data.user));
+      window.alert("user signupsucessfully");
+      //console.log("Response:", response.data);
     } catch (err) {
-      console.log(err.message);
+      console.log(
+        err?.response?.data?.message ||
+          err?.response?.data?.error ||
+          err.message
+      );
     }
   };
 
@@ -40,97 +48,81 @@ export const Signup = () => {
     console.log(formData);
     fetchData();
   };
+
   return (
-    <div className="min-h-screen flex items-center justify-center px-4">
-      <div className="#d4dfed rounded-2xl shadow-xl w-full max-w-md   bg-sky-100 p-8">
-        <h2 className="text-3xl font-bold text-center text-blue-500 mb-6">
-          Sign Up
+    <div className="min-h-screen flex items-center justify-center">
+      <div className="w-full max-w-md border p-6 rounded-lg">
+        <h2 className="text-2xl font-semibold text-center mb-6">
+          Create Account
         </h2>
 
-        <form onSubmit={handleSubmit} className="space-y-5">
-          <div>
-            <label className="block text-gray-600 text-sm font-medium mb-1">
-              FirstName
-            </label>
+        <form onSubmit={handleSubmit} className="space-y-4">
+          <div className="grid grid-cols-2 gap-4">
             <input
               type="text"
               name="firstname"
+              placeholder="First Name"
+              className="border w-full px-3 py-2 rounded"
               value={formData.firstname}
               onChange={handleInput}
               required
-              className="w-full rounded-lg text-black px-4 py-2 "
-              placeholder="Enter FirstName"
             />
-            <label className="block text-gray-600 text-sm font-medium mb-1">
-              LastName
-            </label>
+
             <input
               type="text"
               name="lastname"
+              placeholder="Last Name"
+              className="border w-full px-3 py-2 rounded"
               value={formData.lastname}
               onChange={handleInput}
               required
-              className="w-full rounded-lg text-black px-4 py-2 "
-              placeholder="Enter LastName"
-            />
-            <label className="block text-gray-600 text-sm font-medium mb-1">
-              Username
-            </label>
-            <input
-              type="text"
-              name="username"
-              value={formData.username}
-              onChange={handleInput}
-              required
-              className="w-full rounded-lg text-black px-4 py-2 "
-              placeholder="Enter a unique username"
             />
           </div>
 
-          <div>
-            <label className="block text-gray-600 text-sm font-medium mb-1">
-              Email
-            </label>
-            <input
-              type="email"
-              name="email"
-              required
-              value={formData.email}
-              onChange={handleInput}
-              className="w-full rounded-lg text-black px-4 py-2 "
-              placeholder="you@example.com"
-            />
-          </div>
+          <input
+            type="text"
+            name="username"
+            placeholder="Username"
+            className="border w-full px-3 py-2 rounded"
+            value={formData.username}
+            onChange={handleInput}
+            required
+          />
 
-          <div>
-            <label className="block text-gray-600 text-sm font-medium mb-1">
-              Password
-            </label>
-            <input
-              type="password"
-              name="password"
-              required
-              value={formData.password}
-              onChange={handleInput}
-              className="w-full rounded-lg text-black px-4 py-2 "
-              placeholder="••••••••"
-            />
-          </div>
+          <input
+            type="email"
+            name="email"
+            placeholder="Email"
+            className="border w-full px-3 py-2 rounded"
+            value={formData.email}
+            onChange={handleInput}
+            required
+          />
+
+          <input
+            type="password"
+            name="password"
+            placeholder="Password"
+            className="border w-full px-3 py-2 rounded"
+            value={formData.password}
+            onChange={handleInput}
+            required
+          />
 
           <button
             type="submit"
-            className="w-full bg-blue-500 hover:bg-blue-400 text-black font-semibold py-2 rounded-lg transition"
+            className="w-full border py-2 rounded font-medium"
           >
-            Create Account
+            Sign Up
           </button>
-
-          <p className="text-center text-gray-700 text-sm mt-4">
-            Already have an account?{" "}
-            <Link to="/login" className="text-blue-400 hover:underline">
-              Login
-            </Link>
-          </p>
         </form>
+
+        <p className="text-center text-sm mt-4">
+          Already have an account?{" "}
+          <Link to="/login" className="underline">
+            Login
+          </Link>
+        </p>
       </div>
     </div>
   );
