@@ -33,6 +33,14 @@ const userSchema = new mongoose.Schema({
     required: [true, "enter email"],
     unique: [true, "enter vaild mail"],
   },
+  city:{
+        type:String,
+        required:[true,'Enter city name']
+      },
+  Tech:{
+    type:String,
+    required:[true,'Enter Tech ']
+  },
   // not required
       age:{
         type:Number,
@@ -46,9 +54,7 @@ const userSchema = new mongoose.Schema({
       state:{
         type:String
       },
-      city:{
-        type:String
-      },
+      
 
   friends: [
     {

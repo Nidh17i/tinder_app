@@ -4,7 +4,7 @@ import { TinderUser } from "../models/User.js";
 
 export const approveConnectionReq = async (req, res) => {
   try {
-    const receiverId = req.user.id;
+    const receiverId = req.user._id;
     const senderId = req.params.senderUser;
 
     // console.log(senderId);

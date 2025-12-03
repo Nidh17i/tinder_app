@@ -4,11 +4,11 @@ import jwt from "jsonwebtoken";
 
 export const userSignup = async (req, res) => {
   try {
-    const { firstname,lastname, username, email, password } = req.body;
+    const { firstname,lastname, username, email, password,city,Tech } = req.body;
    // console.log(req.body);
    
 
-    if (!firstname || !lastname|| !username || !email || !password) {
+    if (!firstname || !lastname|| !username || !email || !password|| !city|| !Tech) {
      return res.status(404).json({ message: "All are filed required" });
     }
      const hashpassword = await bcrypt.hash(password, 10);
@@ -23,6 +23,8 @@ export const userSignup = async (req, res) => {
       username,
       email,
       password: hashpassword,
+      Tech,
+      city
     });
 
     const token = jwt.sign({ id: user._id }, process.env.Secret_Key, {
@@ -65,11 +67,17 @@ export const userLogin = async (req, res) => {
 };
 
 export const logoutUser = async (req, res) => {
-  try{
-  res.clearCookie("token",{httpOnly:true});
-  return res.status(200).json({ message: "logged out successfully" });
-  }catch(err){
-    return res.status(500).json({error:err.message})
-  }
+  try {
+    res.cookie("token", "", {
+      httpOnly: true,
+      expires: new Date(0),
+      sameSite: "lax",
+      secure: false,
+    });
 
+    return res.status(200).json({ message: "logged out successfully" });
+  } catch (err) {
+    return res.status(500).json({ error: err.message });
+  }
 };
+

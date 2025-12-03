@@ -1,7 +1,8 @@
 import axios from "axios";
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { userLoggedIn } from "../features/authSlice";
+import {useDispatch} from "react-redux"
 
 export const Signup = () => {
   const [formData, setFormData] = useState({
@@ -10,12 +11,16 @@ export const Signup = () => {
     username: "",
     email: "",
     password: "",
+    city:"",
+    Tech:""
   });
+  const dispatch=useDispatch()
+  const navigate=useNavigate();
 
   const handleInput = (e) => {
     const { name, value } = e.target;
-    console.log(name);
-    console.log(value);
+    // console.log(name);
+    // console.log(value);
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
@@ -32,7 +37,9 @@ export const Signup = () => {
         }
       );
       dispatch(userLoggedIn(response.data.user));
+
       window.alert("user signupsucessfully");
+       navigate('/feed')
       //console.log("Response:", response.data);
     } catch (err) {
       console.log(
@@ -50,14 +57,14 @@ export const Signup = () => {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center">
-      <div className="w-full max-w-md border p-6 rounded-lg">
+    <div className="min-h-screen flex items-center justify-center bg-gray-900">
+      <div className="w-full max-w-md border p-6 rounded-lg text-white">
         <h2 className="text-2xl font-semibold text-center mb-6">
           Create Account
         </h2>
 
         <form onSubmit={handleSubmit} className="space-y-4">
-          <div className="grid grid-cols-2 gap-4">
+          <div className="grid grid-cols-2 gap-4 text-white">
             <input
               type="text"
               name="firstname"
@@ -105,6 +112,24 @@ export const Signup = () => {
             placeholder="Password"
             className="border w-full px-3 py-2 rounded"
             value={formData.password}
+            onChange={handleInput}
+            required
+          />
+          <input
+            type="text"
+            name="Tech"
+            placeholder="Tech"
+            className="border w-full px-3 py-2 rounded"
+            value={formData.Tech}
+            onChange={handleInput}
+            required
+          />
+          <input
+            type="text"
+            name="city"
+            placeholder="city"
+            className="border w-full px-3 py-2 rounded"
+            value={formData.city}
             onChange={handleInput}
             required
           />

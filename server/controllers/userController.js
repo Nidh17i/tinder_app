@@ -85,6 +85,25 @@ export const friendList=async(req,res)=>{
     }
 }
 
+export const pendingSentRequests = async (req, res) => {
+  try {
+    const userId = req.user._id;
+
+    const pending = await UserConnection.find({
+      senderUser: userId,
+      status: "pending",
+    }).populate("receiverUser", "name username city");
+
+    return res.status(200).json({
+      message: "Sent Requests",
+      pending: pending,
+    });
+
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+};
+
 
 export const updateProfile=async(req,res)=>{
   try{
