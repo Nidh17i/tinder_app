@@ -1,5 +1,6 @@
 import { useDispatch, useSelector } from "react-redux";
-  import logo from '../assets/tlogo.svg'
+import logo from "../assets/tlogo.svg";
+import profile from "../assets/profileavtar.jpg";
 import {
   Disclosure,
   DisclosureButton,
@@ -10,13 +11,13 @@ import {
   MenuItems,
 } from "@headlessui/react";
 import { Bars3Icon, BellIcon, XMarkIcon } from "@heroicons/react/24/outline";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import { userLoggedOut } from "../features/authSlice";
 
 const navigation = [
-  { name: "Home", href: "/", current: true },
-  { name: "My Network", href: "/myNetwork", current: false },
+  { name: "Home", href: "/feed", current: true },
+  { name: "Match", href: "/match", current: false },
   { name: "Invitations", href: "/invitations", current: false },
   { name: "Sent Request", href: "/sent", current: false },
 ];
@@ -27,6 +28,7 @@ function classNames(...classes) {
 
 export default function Navbar() {
   const { isAuthenticated } = useSelector((state) => state.authslice);
+  const naviagte = useNavigate();
   const dispatch = useDispatch();
   const handleLogout = async () => {
     try {
@@ -36,6 +38,7 @@ export default function Navbar() {
         { withCredentials: true }
       );
       dispatch(userLoggedOut());
+      naviagte("/");
     } catch (err) {
       console.log(err.response?.data?.message || err.message);
     }
@@ -45,7 +48,6 @@ export default function Navbar() {
     <Disclosure as="nav" className="relative bg-gray-800">
       <div className="mx-auto max-w-7xl px-2 sm:px-6 lg:px-8">
         <div className="relative flex h-16 items-center justify-between">
-          {/* Mobile Menu Button */}
           <div className="absolute inset-y-0 left-0 flex items-center sm:hidden">
             <DisclosureButton className="group relative inline-flex items-center justify-center rounded-md p-2 text-gray-400 hover:bg-white/5 hover:text-white">
               <Bars3Icon className="block size-6 group-data-open:hidden" />
@@ -53,14 +55,13 @@ export default function Navbar() {
             </DisclosureButton>
           </div>
 
-          {/* Logo + Navigation */}
           <div className="flex flex-1 items-center justify-center sm:items-stretch sm:justify-start">
-            {/* Logo */}
-            <div className="flex shrink-0 items-center">
-              <img alt="Your Company" src={logo} className="h-8 w-auto" />
-            </div>
+            <Link to={"/feed"}>
+              <div className="flex shrink-0 items-center">
+                <img alt="Your Company" src={logo} className="h-8 w-auto" />
+              </div>
+            </Link>
 
-            {/* Desktop Navigation */}
             {isAuthenticated && (
               <div className="hidden sm:ml-6 sm:block">
                 <div className="flex space-x-4">
@@ -83,7 +84,6 @@ export default function Navbar() {
             )}
           </div>
 
-          {/* Right Side */}
           <div className="absolute inset-y-0 right-0 flex items-center gap-3 pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0">
             {!isAuthenticated && (
               <>
@@ -98,16 +98,11 @@ export default function Navbar() {
 
             {isAuthenticated && (
               <>
-                <button className="relative rounded-full p-1 text-gray-400">
-                  <BellIcon className="size-6" />
-                </button>
-
-                {/* Profile Menu */}
                 <Menu as="div" className="relative ml-3">
                   <MenuButton className="relative flex rounded-full">
                     <img
                       alt="profile"
-                      src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e"
+                      src={profile}
                       className="size-8 rounded-full"
                     />
                   </MenuButton>
@@ -121,14 +116,7 @@ export default function Navbar() {
                         Your Profile
                       </Link>
                     </MenuItem>
-                    <MenuItem>
-                      <Link
-                        to="/settings"
-                        className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
-                      >
-                        Settings
-                      </Link>
-                    </MenuItem>
+
                     <MenuItem>
                       <button
                         onClick={handleLogout}
@@ -145,10 +133,8 @@ export default function Navbar() {
         </div>
       </div>
 
-      {/* Mobile Menu */}
       <DisclosurePanel className="sm:hidden">
         <div className="space-y-1 px-2 pt-2 pb-3">
-          {/* If authenticated, show nav links */}
           {isAuthenticated &&
             navigation.map((item) => (
               <DisclosureButton
@@ -163,7 +149,6 @@ export default function Navbar() {
               </DisclosureButton>
             ))}
 
-          {/* If NOT logged in → show Login + Signup */}
           {!isAuthenticated && (
             <>
               <DisclosureButton

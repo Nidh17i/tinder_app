@@ -43,7 +43,7 @@ export const handleUserAction = async (req, res) => {
     });
     return res
       .status(200)
-      .json({ message: `Request sent ${receiver.name}!` , connection});
+      .json({ message: `Request sent ${receiver.name}!`, connection });
   } catch (err) {
     res.status(404).json({ message: err.message });
   }

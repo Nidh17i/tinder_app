@@ -1,26 +1,28 @@
 import axios from "axios";
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
 import { userLoggedIn } from "../features/authSlice";
-import {useDispatch} from "react-redux"
+import toast from "react-hot-toast";
 
 export const Signup = () => {
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+
+  const [error, setError] = useState("");
+
   const [formData, setFormData] = useState({
     firstname: "",
     lastname: "",
     username: "",
     email: "",
     password: "",
-    city:"",
-    Tech:""
+    city: "",
+    Tech: "",
   });
-  const dispatch=useDispatch()
-  const navigate=useNavigate();
 
-  const handleInput = (e) => {
+  const handleChange = (e) => {
     const { name, value } = e.target;
-    // console.log(name);
-    // console.log(value);
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
@@ -30,124 +32,166 @@ export const Signup = () => {
         "http://localhost:8080/auth/signup",
         formData,
         {
-          headers: {
-            "Content-Type": "application/json",
-          },
+          headers: { "Content-Type": "application/json" },
           withCredentials: true,
         }
       );
-      dispatch(userLoggedIn(response.data.user));
 
-      window.alert("user signupsucessfully");
-       navigate('/feed')
-      //console.log("Response:", response.data);
+      dispatch(userLoggedIn(response.data.user));
+      toast.success("User signed up successfully!", {
+        duration: 1000,
+        position: "top-right",
+
+        style: {
+          background:
+            "linear-gradient(90deg,rgba(42, 123, 155, 1) 0%, rgba(87, 199, 133, 1) 50%, rgba(237, 221, 83, 1) 100%)",
+          color: "#fff",
+          fontWeight: "bold",
+        },
+      });
+      navigate("/feed");
     } catch (err) {
-      console.log(
+      const msg =
         err?.response?.data?.message ||
-          err?.response?.data?.error ||
-          err.message
-      );
+        err?.response?.data?.error ||
+        "Signup failed!";
+      setError(msg);
     }
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log(formData);
+    setError("");
     fetchData();
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-900">
-      <div className="w-full max-w-md border p-6 rounded-lg text-white">
-        <h2 className="text-2xl font-semibold text-center mb-6">
-          Create Account
-        </h2>
+    <div className="min-h-screen flex items-center justify-center bg-gray-900 px-4">
+      <div className="bg-white shadow-xl rounded-lg flex overflow-hidden max-w-2xl w-full">
+        <div
+          className="hidden md:flex flex-col justify-center items-center w-1/2
+                        bg-gradient-to-br from-purple-500 via-purple-400 to-orange-300 p-10 text-white"
+        >
+          <h1 className="text-3xl font-bold mb-1">Create</h1>
+          <h1 className="text-3xl font-bold">Account</h1>
+        </div>
 
-        <form onSubmit={handleSubmit} className="space-y-4">
-          <div className="grid grid-cols-2 gap-4 text-white">
-            <input
-              type="text"
-              name="firstname"
-              placeholder="First Name"
-              className="border w-full px-3 py-2 rounded"
-              value={formData.firstname}
-              onChange={handleInput}
-              required
-            />
+        <div className="w-full md:w-1/2 p-8">
+          {error && (
+            <p className="mb-3 text-red-700 bg-red-100 p-2 rounded">{error}</p>
+          )}
 
-            <input
-              type="text"
-              name="lastname"
-              placeholder="Last Name"
-              className="border w-full px-3 py-2 rounded"
-              value={formData.lastname}
-              onChange={handleInput}
-              required
-            />
-          </div>
+          <h2 className="text-2xl font-semibold mb-2">Sign Up</h2>
+          <p className="text-gray-500 mb-4 text-sm">Let’s get you started.</p>
 
-          <input
-            type="text"
-            name="username"
-            placeholder="Username"
-            className="border w-full px-3 py-2 rounded"
-            value={formData.username}
-            onChange={handleInput}
-            required
-          />
+          <form onSubmit={handleSubmit} className="space-y-4">
+            <div className="grid grid-cols-2 gap-3">
+              <div>
+                <label className="text-sm font-medium">First Name</label>
+                <input
+                  type="text"
+                  name="firstname"
+                  value={formData.firstname}
+                  onChange={handleChange}
+                  required
+                  className="border w-full px-3 py-2 rounded-lg focus:ring-2 focus:ring-purple-400"
+                />
+              </div>
 
-          <input
-            type="email"
-            name="email"
-            placeholder="Email"
-            className="border w-full px-3 py-2 rounded"
-            value={formData.email}
-            onChange={handleInput}
-            required
-          />
+              <div>
+                <label className="text-sm font-medium">Last Name</label>
+                <input
+                  type="text"
+                  name="lastname"
+                  value={formData.lastname}
+                  onChange={handleChange}
+                  required
+                  className="border w-full px-3 py-2 rounded-lg focus:ring-2 focus:ring-purple-400"
+                />
+              </div>
+            </div>
 
-          <input
-            type="password"
-            name="password"
-            placeholder="Password"
-            className="border w-full px-3 py-2 rounded"
-            value={formData.password}
-            onChange={handleInput}
-            required
-          />
-          <input
-            type="text"
-            name="Tech"
-            placeholder="Tech"
-            className="border w-full px-3 py-2 rounded"
-            value={formData.Tech}
-            onChange={handleInput}
-            required
-          />
-          <input
-            type="text"
-            name="city"
-            placeholder="city"
-            className="border w-full px-3 py-2 rounded"
-            value={formData.city}
-            onChange={handleInput}
-            required
-          />
+            <div className="grid grid-cols-2 gap-3">
+              <div>
+                <label className="text-sm font-medium">Username</label>
+                <input
+                  type="text"
+                  name="username"
+                  value={formData.username}
+                  onChange={handleChange}
+                  required
+                  className="border w-full px-3 py-2 rounded-lg focus:ring-2 focus:ring-purple-400"
+                />
+              </div>
 
-          <button
-            type="submit"
-            className="w-full border py-2 rounded font-medium"
-          >
-            Sign Up
-          </button>
-        </form>
+              <div>
+                <label className="text-sm font-medium">Tech Stack</label>
+                <input
+                  type="text"
+                  name="Tech"
+                  value={formData.Tech}
+                  onChange={handleChange}
+                  required
+                  className="border w-full px-3 py-2 rounded-lg focus:ring-2 focus:ring-purple-400"
+                />
+              </div>
+            </div>
 
-        <p className="text-center text-sm mt-4">
-          Already have an account?{" "}
-          <Link to="/login" className="underline">
-            Login
-          </Link>
-        </p>
+            <div className="grid grid-cols-2 gap-3">
+              <div>
+                <label className="text-sm font-medium">Email</label>
+                <input
+                  type="email"
+                  name="email"
+                  value={formData.email}
+                  onChange={handleChange}
+                  required
+                  className="border w-full px-3 py-2 rounded-lg focus:ring-2 focus:ring-purple-400"
+                />
+              </div>
+
+              <div>
+                <label className="text-sm font-medium">City</label>
+                <input
+                  type="text"
+                  name="city"
+                  value={formData.city}
+                  onChange={handleChange}
+                  required
+                  className="border w-full px-3 py-2 rounded-lg focus:ring-2 focus:ring-purple-400"
+                />
+              </div>
+            </div>
+
+            {/* PASSWORD */}
+            <div>
+              <label className="text-sm font-medium">Password</label>
+              <input
+                type="password"
+                name="password"
+                value={formData.password}
+                onChange={handleChange}
+                required
+                className="border w-full px-3 py-2 rounded-lg focus:ring-2 focus:ring-purple-400"
+              />
+            </div>
+
+            <button
+              type="submit"
+              className="w-full py-2 rounded-lg bg-purple-500 text-white font-medium 
+                         hover:bg-purple-600 transition"
+            >
+              Sign Up
+            </button>
+
+            <p className="text-center text-sm mt-2">
+              Already have an account?{" "}
+              <Link to="/login" className="text-purple-600 underline">
+                Login
+              </Link>
+            </p>
+          </form>
+        </div>
       </div>
     </div>
   );

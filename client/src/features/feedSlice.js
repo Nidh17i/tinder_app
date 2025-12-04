@@ -16,4 +16,3 @@ const feedslice = createSlice({
 });
 export const { friendList } = feedslice.actions;
 export default feedslice.reducer;
-

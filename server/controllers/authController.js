@@ -4,41 +4,53 @@ import jwt from "jsonwebtoken";
 
 export const userSignup = async (req, res) => {
   try {
-    const { firstname,lastname, username, email, password,city,Tech } = req.body;
-   // console.log(req.body);
-   
+    const { firstname, lastname, username, email, password, city, Tech } =
+      req.body;
+    // console.log(req.body);
 
-    if (!firstname || !lastname|| !username || !email || !password|| !city|| !Tech) {
-     return res.status(404).json({ message: "All are filed required" });
+    if (
+      !firstname ||
+      !lastname ||
+      !username ||
+      !email ||
+      !password ||
+      !city ||
+      !Tech
+    ) {
+      return res.status(404).json({ message: "All are filed required" });
     }
-     const hashpassword = await bcrypt.hash(password, 10);
+    const hashpassword = await bcrypt.hash(password, 10);
     const userExists = await TinderUser.findOne({ email });
     if (userExists) {
       return res.status(400).json({ message: "user already exists" });
     }
 
     const user = await TinderUser.create({
-     firstname,
-     lastname,
+      firstname,
+      lastname,
       username,
       email,
       password: hashpassword,
       Tech,
-      city
+      city,
     });
 
     const token = jwt.sign({ id: user._id }, process.env.Secret_Key, {
       expiresIn: "1h",
     });
-   res.cookie("token", token,{httpOnly:true,secure:false,sameSite:"lax"});
+    res.cookie("token", token, {
+      httpOnly: true,
+      secure: false,
+      sameSite: "lax",
+    });
 
-
-   return res.status(201).json({ message: "user Signup Sucessfully" , user,token});
+    return res
+      .status(201)
+      .json({ message: "user Signup Sucessfully", user, token });
   } catch (err) {
     return res.status(500).json({ error: err.message });
   }
 };
-
 
 export const userLogin = async (req, res) => {
   try {
@@ -57,12 +69,15 @@ export const userLogin = async (req, res) => {
     const token = jwt.sign({ id: user._id }, process.env.Secret_Key, {
       expiresIn: "1h",
     });
-   res.cookie("token", token,{httpOnly:true,secure:false,sameSite:"lax"});
+    res.cookie("token", token, {
+      httpOnly: true,
+      secure: false,
+      sameSite: "lax",
+    });
 
-
-   return res.status(201).json({ message: "login sucessfully",user});
+    return res.status(201).json({ message: "login sucessfully", user });
   } catch (err) {
-   return res.status(500).json({ error: err.message });
+    return res.status(500).json({ error: err.message });
   }
 };
 
@@ -80,4 +95,3 @@ export const logoutUser = async (req, res) => {
     return res.status(500).json({ error: err.message });
   }
 };
-

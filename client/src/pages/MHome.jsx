@@ -9,18 +9,18 @@ export const MHome = () => {
       >
         <div className="absolute inset-0 bg-black/50" />
 
-        <div className="relative z-10 flex flex-col items-center t
-        
-        
-         space-y-6">
+        <div className="relative z-10 flex flex-col items-center text-white  space-y-6">
           <h1 className="text-6xl font-bold drop-shadow-lg ">
             Start something epic..
           </h1>
 
           <Link
             to="/signup"
-            className="bg-red-500 hover:bg-red-600 px-10 py-3 rounded-full
-    font-semibold text-lg shadow-xl transition"
+            className="px-8 py-3 text-lg font-semibold rounded-full text-white shadow-xl transition-all duration-300 hover:scale-105"
+            style={{
+              background:
+                "linear-gradient(90deg, rgba(131,58,180,1) 0%, rgba(253,29,29,1) 50%, rgba(252,176,69,1) 100%)",
+            }}
           >
             Create Account
           </Link>
