@@ -46,7 +46,7 @@ export const pendingRequests = async (req, res) => {
     const request = await UserConnection.find({
       receiverUser: userId,
       status: "pending",
-    }).populate("senderUser", "name username city ");
+    }).populate("senderUser", "Tech username city ");
 
     return res.status(200).json({
       message: "Incoming Request",
@@ -82,7 +82,7 @@ export const pendingSentRequests = async (req, res) => {
     const pending = await UserConnection.find({
       senderUser: userId,
       status: "pending",
-    }).populate("receiverUser", "name username city");
+    }).populate("receiverUser", "name username city Tech");
 
     return res.status(200).json({
       message: "Sent Requests",
@@ -101,7 +101,6 @@ export const updateProfile = async (req, res) => {
       "firstname",
       "lastname",
       "username",
-      "email",
       "city",
       "Tech",
       "age",
