@@ -163,7 +163,7 @@ export const Signup = () => {
               </div>
             </div>
 
-            {/* PASSWORD */}
+            
             <div>
               <label className="text-sm font-medium">Password</label>
               <input

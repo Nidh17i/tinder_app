@@ -5,7 +5,7 @@ export const isAuthenticated = async (req, res, next) => {
   try {
     const token = req.cookies.token;
     if (!token)
-      return res.status(401).json({ error: "No token,authorization denied" });
+      return res.status(401).json({ error: "No token,authorization " });
 
     const decode = jwt.verify(token, process.env.Secret_Key);
     //console.log('decoded ',decode);

@@ -117,7 +117,7 @@ export const Login = () => {
             <button
               type="submit"
               className="w-full py-2 rounded-lg bg-purple-500 text-white font-medium 
-                         hover:bg-purple-600 transition"
+                         hover:bg-purple-600 transition cursor-pointer"
             >
               Login
             </button>

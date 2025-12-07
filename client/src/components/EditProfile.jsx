@@ -179,7 +179,7 @@ export default function EditProfile() {
             <p className="text-center text-purple-400 text-sm">{message}</p>
           )}
 
-          <button className="w-full bg-purple-600 py-3 rounded-lg font-semibold text-white shadow-md hover:bg-purple-500 transition-all">
+          <button className="w-full bg-purple-600 py-3 rounded-lg font-semibold text-white shadow-md hover:bg-purple-500 transition-all cursor-pointer">
             Save Changes
           </button>
         </form>

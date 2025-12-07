@@ -108,14 +108,14 @@ export const IncomingInvitations = () => {
                 <div className="flex gap-3">
                   <button
                     onClick={() => handleAccept(req.senderUser._id)}
-                    className="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700"
+                    className="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 cursor-pointer"
                   >
                     Accept
                   </button>
 
                   <button
                     onClick={() => handleReject(req.senderUser._id)}
-                    className="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700"
+                    className="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 cursor-pointer"
                   >
                     Reject
                   </button>

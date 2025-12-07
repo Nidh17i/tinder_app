@@ -3,57 +3,55 @@ import mongoose from "mongoose";
 const userSchema = new mongoose.Schema({
   firstname: {
     type: String,
-    required: [true, "Firstname is required"],
+    required: [true, "firstname is required"],
     trim: true,
-    minlength: [2, "Too short name"],
-    maxlength: [20, "Too long name"],
+    minlength: [2, "too short name"],
+    maxlength: [20, "too long name"],
   },
 
   lastname: {
     type: String,
-    required: [true, "Lastname is required"],
+    required: [true, "lastname is required"],
     trim: true,
-    minlength: [2, "Too short name"],
-    maxlength: [20, "Too long name"],
+    minlength: [2, "too short name"],
+    maxlength: [20, "too long name"],
   },
 
   username: {
     type: String,
-    required: [true, "Username is required"],
-    unique: true,
-    trim: true,
-    lowercase: true,
-    minlength: [4, "Username too short"],
-    maxlength: [8, "Username too long"],
+    required: [true, "username is required"],
+    unique: [true, "username already exists"],
+    minlength: [4, "too short..."],
+    maxlength: [8, "too long"],
   },
 
   password: {
     type: String,
-    required: [true, "Password is required"],
+    required: true,
   },
 
   email: {
     type: String,
-    required: [true, "Email is required"],
-    unique: true,
     lowercase: true,
-    trim: true,
+    required: [true, "enter email"],
+    unique: [true, "email already exists"],
   },
 
   city: {
     type: String,
-    required: [true, "City is required"],
+    required: [true, "Enter city name"],
   },
 
   Tech: {
     type: String,
-    required: [true, "Tech field is required"],
+    required: [true, "Enter Tech"],
   },
 
+  // Optional fields
   age: {
     type: Number,
     min: [18, "Age must be 18 or above"],
-    max: [65, "Age cannot exceed 65"],
+    max: 65,
   },
 
   gender: {
