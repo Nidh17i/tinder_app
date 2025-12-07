@@ -1,5 +1,5 @@
 import axios from "axios";
-import myImage from "../assets/profileavtar.jpg";
+import myImage from "../assets/avtarcard.svg";
 import { useDispatch, useSelector } from "react-redux";
 import { friendList } from "../features/feedSlice";
 import { useEffect, useState } from "react";
@@ -75,42 +75,51 @@ export const Home = () => {
         ) : currentUser ? (
           <div
             key={currentUser._id}
-            className="w-80 bg-gray-400 shadow-lg rounded-2xl overflow-hidden p-5"
+            className="w-80 h-[520px] bg-gray-800 rounded-3xl overflow-hidden shadow-2xl 
+             flex flex-col border border-gray-700"
           >
-            <img
-              src={myImage}
-              alt="Profile"
-              className="w-full h-70 object-cover"
-            />
-
-            <div className="p-4">
-              <h2 className="text-xl font-bold">{currentUser.username}</h2>
-
-              <p className="text-gray-800">
-                <span className="font-semibold text-black">City:</span>{" "}
-                {currentUser.city}
-              </p>
-
-              <p className="text-gray-800">
-                <span className="font-semibold text-black">Tech:</span>{" "}
-                {currentUser.Tech}
-              </p>
-
-              <div className="flex items-center justify-between mt-5">
-                <button
-                  className="w-28 py-2 bg-blue-500 text-white rounded-lg shadow hover:bg-blue-600 transition text-sm cursor-pointer"
-                  onClick={() => handleAction(currentUser._id, "interested")}
-                >
-                  Interested
-                </button>
-
-                <button
-                  className="w-28 py-2 bg-red-500 text-white rounded-lg shadow hover:bg-red-600 transition text-sm cursor-pointer"
-                  onClick={() => handleAction(currentUser._id, "ignored")}
-                >
-                  Reject
-                </button>
+            <div className="h-[70%] w-full flex justify-center items-center px-4 pt-4">
+              <div className="w-full h-full rounded-xl overflow-hidden shadow-md bg-gray-700">
+                <img
+                  src={myImage}
+                  alt="Profile"
+                  className="w-full h-full object-cover"
+                />
               </div>
+            </div>
+
+            <div className="h-[30%] px-5 py-4 text-white bg-gray-900">
+              <h2 className="text-2xl font-bold">{currentUser.username}</h2>
+
+              <p className="text-gray-400 text-sm mt-1">{currentUser.city}</p>
+
+              <div className="mt-3">
+                <p className="text-xs text-gray-500 uppercase">Tech Stack</p>
+                <span
+                  className="inline-block mt-1 bg-gray-700 text-purple-200 border
+                       border-gray-600 text-sm px-3 py-1 rounded-md"
+                >
+                  {currentUser.Tech || "Not Provided"}
+                </span>
+              </div>
+            </div>
+
+            <div className="h-[10%] bg-gray-900 flex items-center justify-center gap-5 pb-3">
+              <button
+                onClick={() => handleAction(currentUser._id, "ignored")}
+                className="px-6 py-2 bg-red-500 text-white rounded-full font-semibold
+               shadow-lg hover:bg-red-600 hover:scale-105 transition cursor-pointer"
+              >
+                Reject
+              </button>
+
+              <button
+                onClick={() => handleAction(currentUser._id, "interested")}
+                className="px-6 py-2 bg-green-500 text-white rounded-full font-semibold
+               shadow-lg hover:bg-green-600 hover:scale-105 transition cursor-pointer"
+              >
+                Interested
+              </button>
             </div>
           </div>
         ) : (

@@ -4,12 +4,14 @@ import { Link, useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { userLoggedIn } from "../features/authSlice";
 import toast from "react-hot-toast";
+import { EyeIcon, EyeSlashIcon } from "@heroicons/react/24/outline";
 
 export const Login = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
   const [error, setError] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
 
   const [formData, setFormData] = useState({
     email: "",
@@ -27,19 +29,17 @@ export const Login = () => {
         "http://localhost:8080/auth/login",
         formData,
         {
-          headers: {
-            "Content-Type": "application/json",
-          },
+          headers: { "Content-Type": "application/json" },
           withCredentials: true,
         }
       );
 
       dispatch(userLoggedIn(response.data.user));
       navigate("/feed");
+
       toast.success("User Login successfully!", {
         duration: 1000,
         position: "top-right",
-
         style: {
           background:
             "linear-gradient(90deg,rgba(42, 123, 155, 1) 0%, rgba(87, 199, 133, 1) 50%, rgba(237, 221, 83, 1) 100%)",
@@ -84,10 +84,9 @@ export const Login = () => {
           </p>
 
           <form onSubmit={handleSubmit} className="space-y-4">
+            {/* Email */}
             <div>
-              <label className="block text-sm font-medium mb-1">
-                User Name
-              </label>
+              <label className="block text-sm font-medium mb-1">Email</label>
               <input
                 type="email"
                 name="email"
@@ -100,18 +99,32 @@ export const Login = () => {
               />
             </div>
 
-            <div>
+            {/* Password + Eye Button */}
+            <div className="relative">
               <label className="block text-sm font-medium mb-1">Password</label>
+
               <input
-                type="password"
+                type={showPassword ? "text" : "password"}
                 name="password"
                 value={formData.password}
                 onChange={handleChange}
                 required
-                className="border w-full px-3 py-2 rounded-lg focus:outline-none focus:ring-2 
-                           focus:ring-purple-400"
+                className="border w-full px-3 py-2 rounded-lg 
+                           focus:ring-2 focus:ring-purple-400 pr-12"
                 placeholder="***********"
               />
+
+              <button
+                type="button"
+                onClick={() => setShowPassword(!showPassword)}
+                className="absolute right-3 top-[38px] text-gray-500 hover:text-gray-700"
+              >
+                {showPassword ? (
+                  <EyeSlashIcon className="h-5 w-5" />
+                ) : (
+                  <EyeIcon className="h-5 w-5" />
+                )}
+              </button>
             </div>
 
             <button

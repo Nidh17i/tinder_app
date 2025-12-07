@@ -1,5 +1,5 @@
 import { useDispatch, useSelector } from "react-redux";
-import logo from "../assets/image.png";
+
 import profile from "../assets/profileavtar.jpg";
 import {
   Disclosure,
@@ -58,9 +58,12 @@ export default function Navbar() {
           <div className="flex flex-1 items-center justify-center sm:items-stretch sm:justify-start">
             <Link to={"/feed"}>
               <div className="flex shrink-0 items-center">
-               <span className="text-white font-extrabold text-xxl tracking-wide">
-  TechMate
-     </span>
+              <span className="text-white font-bold text-2xl sm:text-3xl tracking-wider">
+  <span className="text-blue-400">Tech</span>
+  <span className="text-cyan-300">Mate</span>
+</span>
+
+
 
                
               </div>
