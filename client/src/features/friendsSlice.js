@@ -9,7 +9,7 @@ const friendSlice = createSlice({
   initialState,
   reducers: {
     userFriend: (state, action) => {
-      console.log("payload", action.payload);
+      //console.log("payload", action.payload);
       state.friends = action.payload;
     },
   },

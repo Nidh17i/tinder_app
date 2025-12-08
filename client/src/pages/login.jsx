@@ -38,7 +38,7 @@ export const Login = () => {
       navigate("/feed");
 
       toast.success("User Login successfully!", {
-        duration: 1000,
+        duration: 2000,
         position: "top-right",
         style: {
           background:
@@ -84,7 +84,7 @@ export const Login = () => {
           </p>
 
           <form onSubmit={handleSubmit} className="space-y-4">
-            {/* Email */}
+         
             <div>
               <label className="block text-sm font-medium mb-1">Email</label>
               <input
@@ -99,7 +99,7 @@ export const Login = () => {
               />
             </div>
 
-            {/* Password + Eye Button */}
+         
             <div className="relative">
               <label className="block text-sm font-medium mb-1">Password</label>
 
