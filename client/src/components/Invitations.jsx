@@ -72,7 +72,7 @@ export const IncomingInvitations = () => {
     <div className="min-h-screen bg-gray-900 py-10 px-6 flex justify-center">
       <div className="w-full max-w-2xl">
         <h1 className="text-center text-3xl font-bold mb-8 text-purple-400">
-          Incoming Invitations
+          Incoming Invitations...
         </h1>
 
         {loading && (

@@ -29,10 +29,7 @@ const userSchema = new mongoose.Schema({
     type: String,
     required: true,
     minlength: [8, "Password must be at least 8 characters"],
-    match: [
-      /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/,
-      "Password must contain at least one uppercase, one lowercase, one number and one special character",
-    ],
+   
   },
 
   email: {
@@ -40,10 +37,7 @@ const userSchema = new mongoose.Schema({
     lowercase: true,
     required: [true, "enter email"],
     unique: [true, "email already exists"],
-    match: [
-      /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/,
-      "Please fill a valid email address",
-    ],
+    
   },
 
   city: {

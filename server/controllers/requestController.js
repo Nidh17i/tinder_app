@@ -28,6 +28,7 @@ export const handleUserAction = async (req, res) => {
       }
       return res.status(201).json({ message: "action Ignored" });
     }
+    
 
     const existingConnection = await UserConnection.findOne({
       senderUser: senderId,
@@ -47,4 +48,7 @@ export const handleUserAction = async (req, res) => {
   } catch (err) {
     res.status(404).json({ message: err.message });
   }
+ 
 };
+
+

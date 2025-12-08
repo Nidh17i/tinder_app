@@ -102,7 +102,6 @@ export const logoutUser = async (req, res) => {
   try {
     res.cookie("token", "", {
       httpOnly: true,
-      expires: new Date(0),
       sameSite: "lax",
       secure: false,
     });
