@@ -41,7 +41,7 @@ export const Signup = () => {
         }
       );
 
-      dispatch(userLoggedIn(response.data.user));
+      dispatch(userLoggedIn(response.data.user));                                                                       
       toast.success("User signed up successfully!", {
         duration: 1000,
         position: "top-right",

@@ -11,9 +11,10 @@ dotenv.config();
 
 
 const app=express();
+//console.log(process.env.FRONTED_URL);
 
 const corsOptions={
-    origin:"http://localhost:5173",
+    origin:process.env.FRONTED_URL,
     methods:"GET,POST,DELETE,PATCH,PUT,HEAD",
     credentials:true,
 }
@@ -21,6 +22,7 @@ const corsOptions={
 app.use(cors(corsOptions));
 app.use(express.json());
 app.use(cookieParser());
+
 
 
 
