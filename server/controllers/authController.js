@@ -1,5 +1,6 @@
 import { TinderUser } from "../models/User.js";
 import bcrypt from "bcryptjs";
+import { error } from "console";
 import jwt from "jsonwebtoken";
 
 export const userSignup = async (req, res) => {
@@ -109,5 +110,15 @@ export const logoutUser = async (req, res) => {
     return res.status(200).json({ message: "logged out successfully" });
   } catch (err) {
     return res.status(500).json({ error: err.message });
+  }
+}
+
+export const selfInfo=async(req,res)=>{
+  try{
+    const user=req.user;
+   // console.log(user);
+    return res.status(200).json({message:"Self Info",user:req.user})
+  }catch(err){
+   return  res.status(500).json({error:err.message});
   }
 }

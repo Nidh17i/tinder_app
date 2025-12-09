@@ -14,7 +14,10 @@ import { Toaster } from "react-hot-toast";
 import { Profile } from "./pages/Profile";
 import EditProfile from "./components/EditProfile";
 
+
+
 function App() {
+  
   return (
     <div>
       <BrowserRouter>
