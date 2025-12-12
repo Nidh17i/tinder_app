@@ -1,7 +1,7 @@
 import express from 'express';
 import { isAuthenticated } from '../middleware/isAuthenticated.js';
 import { Feed, friendList, pendingRequests, pendingSentRequests, updateProfile } from '../controllers/userController.js';
-import { selfInfo } from '../controllers/authController.js';
+
 
 
 const router=express.Router();

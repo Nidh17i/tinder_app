@@ -1,6 +1,5 @@
 import { TinderUser } from "../models/User.js";
 import bcrypt from "bcryptjs";
-import { error } from "console";
 import jwt from "jsonwebtoken";
 
 export const userSignup = async (req, res) => {
